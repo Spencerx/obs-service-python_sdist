@@ -51,8 +51,12 @@ mkdir -p %{buildroot}%{_prefix}/lib/obs/service
 install -m 0755 python_sdist %{buildroot}%{_prefix}/lib/obs/service
 install -m 0644 python_sdist.service %{buildroot}%{_prefix}/lib/obs/service
 
+%if 0%{?fedora} > 42 || 0%{?suse_version} >= 1600
+perl -p -i -e 's{#!.*python}{#!%{_bindir}/python3}' %{buildroot}%{_prefix}/lib/obs/service/python_sdist
+%else
 %if 0%{?fedora} > 29 || 0%{?centos_ver} >= 7 || 0%{?mageia} >= 8
 perl -p -i -e 's{#!.*python}{#!%{_bindir}/python2}' %{buildroot}%{_prefix}/lib/obs/service/python_sdist
+%endif
 %endif
 
 %files
